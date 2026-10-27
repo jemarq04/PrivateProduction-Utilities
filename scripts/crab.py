@@ -30,8 +30,13 @@ is_gensim = sectionSettings["step"] == "GENSIM"
 # Print statements
 print(f'Submitting {requestName}')
 print(f'  step: {sectionSettings["step"]}')
+prev_input = ""
 if not is_gensim:
-    print(f'  input: {sectionSettings[VALID_STEPS[prev_step] + "Dataset"]}')
+    prev_input = sectionSettings[VALID_STEPS[prev_step] + "Dataset"]
+    if prev_input == "":
+        print(f"error: empty input dataset for {VALID_STEPS[prev_step]}Dataset")
+        exit(1)
+    print(f'  input: {prev_input}')
 
 # Initialize CRAB config
 from CRABClient.UserUtilities import config
@@ -60,7 +65,7 @@ else:
     config.Data.splitting = 'FileBased'
     config.Data.unitsPerJob = 1
     config.Data.inputDBS = "phys03"
-    config.Data.inputDataset = sectionSettings[f'{VALID_STEPS[prev_step]}Dataset']
+    config.Data.inputDataset = prev_input
 config.Data.publication = True
 config.Data.publishDBS = "phys03"
 config.Data.outputDatasetTag = sectionSettings["tag"]
