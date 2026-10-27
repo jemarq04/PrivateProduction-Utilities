@@ -5,21 +5,17 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 #@optdesc Print help and exit
 #@opt -s/--steps "STEP [STEP ...]"
 #@optdesc Step(s) for CMS config files or 'all' to generate files for each step (default: all)
-#@opt -u/--update
-#@optdesc If generating a GENSIM file, overwrite fragment in Configuration/GenProductions/ with the one in inputs/fragments/
 #@arg year
 #@argdesc Year to generate CMS config files for with cmsDriver.py
 #@arg [name ...]
 #@argdesc Identifier(s) for dataset (e.g. TTZ). Fragments follow the name "NAME_YEAR-fragment.py". By default, all names found with the given year are used.
 
 # Set default values
-optstring="h/help*,s/steps:,u/update"
+optstring="h/help*,s/steps:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
-gen="${CMSSW_BASE}/src/Configuration/GenProduction/python/"
 valid_steps="GENSIM HLT RECO MINI NANO"
 valid_years="2022 2023 2024"
 steps="$valid_steps"
-update=false
 
 # Parse arguments
 parse_args "$0" "$optstring" 1 "$@"
@@ -39,7 +35,7 @@ names="$@"
 # Set names
 names="$@"
 if [[ -z $names ]]; then
-  names=($utils/inputs/fragments/*$year*.py)
+  names=($utils/python/*_$year-fragment.py)
   names=(${names[@]##*\/})
   names=(${names[@]%%_$year-fragment.py})
 fi
@@ -58,23 +54,17 @@ fi
 
 # Create CMS files for each input/step
 for name in ${names[@]}; do
-  fragment="${name}_${year}-fragment.py"
+  fragment="$utils/python/${name}_${year}-fragment.py"
 
   # Check name
-  [[ ! -f $utils/inputs/fragments/$fragment ]] && echo && echo "WARNING: No fragment exists for $name. Make sure there isn't a typo!"
+  [[ ! -f $fragment ]] && echo && echo "WARNING: No fragment exists for $name. Make sure there isn't a typo!"
   echo
   echo "Generating cards for $name (steps: $steps)"
   for step in $steps; do
     echo "=====> Generating step $step"
     if [[ $step = GENSIM ]]; then
-      if $update || [[ ! -f $gen/$fragment ]]; then
-        [[ ! -f $utils/inputs/fragments/$fragment ]] && die "no fragment found for $name: $utils/inputs/fragments/$fragment"
-        mkdir -p $gen
-        cp -v $utils/inputs/fragments/$fragment $gen/$fragment
-      fi
-
       outname=GENSIM-${name}_${year}
-      cmsDriver.py $gen/$fragment --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads \
+      cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads \
         && sed -i -e "s/^process.LHEoutput_step/#process.LHEoutput_step/" $utils/inputs/$outname.py \
         && sed -i -e "s/,process.LHEoutput_step)/) #process.LHEoutput_step)/" $utils/inputs/$outname.py
 
