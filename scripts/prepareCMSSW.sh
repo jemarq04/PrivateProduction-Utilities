@@ -64,13 +64,13 @@ for name in ${names[@]}; do
     echo "=====> Generating step $step"
     if [[ $step = GENSIM ]]; then
       outname=GENSIM-${name}_${year}
-      cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads \
-        && sed -i -e "s/^process.LHEoutput_step/#process.LHEoutput_step/" $utils/inputs/$outname.py \
-        && sed -i -e "s/,process.LHEoutput_step)/) #process.LHEoutput_step)/" $utils/inputs/$outname.py
+      cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads &&
+        sed -i -e "s/^process.LHEoutput_step/#process.LHEoutput_step/" $utils/inputs/$outname.py &&
+        sed -i -e "s/,process.LHEoutput_step)/) #process.LHEoutput_step)/" $utils/inputs/$outname.py
 
     elif [[ $step = HLT ]]; then
       outname=HLT-${name}_${year}
-      cmsDriver.py step1 --fileout file:$outname.root  --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:2024v14 --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step1 --fileout file:$outname.root --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:2024v14 --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
 
     elif [[ $step = RECO ]]; then
       outname=RECO-${name}_${year}
