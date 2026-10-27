@@ -6,14 +6,14 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 #@opt -s/--step
 #@optdesc Step for CRAB job submission. Choices: GENSIM, HLT, RECO, MINI, NANO.
 #@opt -y/--year
-#@optdesc Year for CRAB job submission. Choices: 2022, 2023, 2024, 2025.
+#@optdesc Year for CRAB job submission. Choices: 2022, 2023, 2024.
 #@arg section [section ...]
 #@argdesc Name(s) of a section in settings.cfg with the desired options for CRAB job
 
 optstring="h/help*,s/step:,y/year:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
 valid_steps="GENSIM HLT RECO MINI NANO"
-valid_years="2022 2023 2024 2025"
+valid_years="2022 2023 2024"
 
 parse_args "$0" "$optstring" 1 "$@"
 eval set -- "$BAP_PARSED"

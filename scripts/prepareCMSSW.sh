@@ -17,7 +17,7 @@ optstring="h/help*,s/steps:,u/update"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
 gen="${CMSSW_BASE}/src/Configuration/GenProduction/python/"
 valid_steps="GENSIM HLT RECO MINI NANO"
-valid_years="2022 2023 2024 2025"
+valid_years="2022 2023 2024"
 steps="$valid_steps"
 update=false
 
