@@ -48,6 +48,7 @@ if [[ $year = 2024 ]]; then
   conditions=140X_mcRun3_2024_realistic_v26
   newconditions=150X_mcRun3_2024_realistic_v2
   pileup="dbs:/Neutrino_E-10_gun/RunIIISummer24PrePremix-Premixlib2024_140X_mcRun3_2024_realistic_v26-v1/PREMIX"
+  HLT="2024v14"
 else
   die "Only 2024 options are available - add more options if needed"
 fi
@@ -70,7 +71,7 @@ for name in ${names[@]}; do
 
     elif [[ $step = HLT ]]; then
       outname=HLT-${name}_${year}
-      cmsDriver.py step1 --fileout file:$outname.root --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:2024v14 --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step1 --fileout file:$outname.root --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:$HLT --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
 
     elif [[ $step = RECO ]]; then
       outname=RECO-${name}_${year}
