@@ -7,8 +7,8 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 #@optdesc Step for CRAB job submission. Choices: GENSIM, HLT, RECO, MINI, NANO.
 #@opt -y/--year
 #@optdesc Year for CRAB job submission. Choices: 2022, 2023, 2024.
-#@arg section [section ...]
-#@argdesc Name(s) of a section in settings.cfg with the desired options for CRAB job
+#@arg name [name ...]
+#@argdesc Name(s) of a name in settings.cfg with the desired options for CRAB job
 
 optstring="h/help*,s/step:,y/year:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
@@ -18,7 +18,7 @@ valid_years="2022 2023 2024"
 parse_args "$0" "$optstring" 1 "$@"
 eval set -- "$BAP_PARSED"
 
-sections="$@"
+names="$@"
 
 # Check for settings file
 [[ ! -f settings.cfg ]] && die "settings.cfg not found: make sure to run in $utils/submit/"
@@ -47,7 +47,7 @@ while [ $# -gt 0 ]; do
     continue
   fi
 
-  sed -i -e "s|^section: .*|section: $1|" settings.cfg
+  sed -i -e "s|^name: .*|name: $1|" settings.cfg
   echo Submitting jobs for $1 for $year with step $step
   crab submit -c $utils/scripts/crab.py
   shift
