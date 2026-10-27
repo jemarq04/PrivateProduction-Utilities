@@ -41,7 +41,7 @@ names="$@"
 if [[ -z $names ]]; then
   names=($utils/inputs/fragments/*$year*.py)
   names=(${names[@]##*\/})
-  names=(${names[@]%%-fragment.py})
+  names=(${names[@]%%_$year-fragment.py})
 fi
 
 # Set options based on year
@@ -69,6 +69,7 @@ for name in ${names[@]}; do
     if [[ $step = GENSIM ]]; then
       if $update || [[ ! -f $gen/$fragment ]]; then
         [[ ! -f $utils/inputs/fragments/$fragment ]] && die "no fragment found for $name: $utils/inputs/fragments/$fragment"
+        mkdir -p $gen
         cp -v $utils/inputs/fragments/$fragment $gen/$fragment
       fi
 
