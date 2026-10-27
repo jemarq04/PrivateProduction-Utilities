@@ -1,0 +1,49 @@
+#!/bin/bash
+
+source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
+#@opt -h/--help
+#@optdesc Print help and exit
+#@opt -s/--step
+#@optdesc Step for CRAB job submission. Choices: GENSIM, HLT, RECO, MINI, NANO.
+#@opt -y/--year
+#@optdesc Year for CRAB job submission. Choices: 2022, 2023, 2024, 2025.
+#@arg section [section ...]
+#@argdesc Name(s) of a section in settings.cfg with the desired options for CRAB job
+
+optstring="h/help*,s/step:,y/year:"
+utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
+valid_steps="GENSIM HLT RECO MINI NANO"
+valid_years="2022 2023 2024 2025"
+
+parse_args "$0" "$optstring" 1 "$@"
+eval set -- "$BAP_PARSED"
+
+sections="$@"
+
+# Check for settings file
+[[ ! -f settings.cfg ]] && die "settings.cfg not found: make sure to run in $utils/submit/"
+
+# Check for valid step
+if [[ -n $step ]]; then
+  [[ $valid_steps = *$step* ]] || die "invalid step: $step. must be one of $valid_steps"
+  sed -i -e "s|^step: .*|step: $step|" settings.cfg
+fi
+
+# Check for valid year
+if [[ -n $year ]]; then
+  [[ $valid_years = *$year* ]] || die "invalid year: $year. must be one of $valid_years"
+  sed -i -e "s|^year: .*|year: $year|" settings.cfg
+
+# Submit jobs for each requested section 
+while [ $# -gt 0 ]; do
+  if [[ -z $(grep "^\s*\[$1\]\s*$" settings.cfg) ]]; then
+    echo "Section name $1 not found"
+    shift
+    continue
+  fi
+
+  sed -i -e "s|^section: .*|section: $1|" settings.cfg
+  echo Using $1
+  crab submit -c $utils/scripts/crab.py
+  shift
+done
