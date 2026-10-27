@@ -50,6 +50,7 @@ beamspot=DBrealistic
 if [[ $year = 2024 ]]; then
   era=Run3_2024
   conditions=140X_mcRun3_2024_realistic_v26
+  newconditions=150X_mcRun3_2024_realistic_v2
   pileup="dbs:/Neutrino_E-10_gun/RunIIISummer24PrePremix-Premixlib2024_140X_mcRun3_2024_realistic_v26-v1/PREMIX"
 else
   die "Only 2024 options are available - add more options if needed"
@@ -85,11 +86,19 @@ for name in ${names[@]}; do
       cmsDriver.py step2 --fileout file:$outname.root --mc --eventcontent AODSIM --datatier AODSIM --conditions $conditions --step RAW2DIGI,L1Reco,RECO,RECOSIM --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
 
     elif [[ $step = MINI ]]; then
+      eventcontent=MINIAODSIM
+      tempconditions=$conditions
+      [[ $year = 2024 ]] && eventcontent=MINIAODSIM1 && tempconditions=$newconditions
+
       outname=MINI-${name}_${year}
-      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent MINIAODSIM --datatier MINIAODSIM --conditions $conditions --step PAT --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier MINIAODSIM --conditions $tempconditions --step PAT --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
 
     elif [[ $step = NANO ]]; then
-      die "I haven't added NANO yet..."
+      eventcontent=NANOEDMAODSIM
+      [[ $year = 2024 ]] && eventcontent=NANOEDMAODSIM1 && tempconditions=$newconditions
+
+      outname=NANO-${name}_${year}
+      cmsDriver.py step4 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier NANOAODSIM --conditions $tempconditions --step NANO --scenario pp --era $era --nThreads $nThreads
     else
       die "unknown step $step"
     fi
