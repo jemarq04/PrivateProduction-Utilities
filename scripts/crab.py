@@ -57,7 +57,7 @@ config.JobType.psetName = f'{os.environ["CMSSW_BASE"]}/src/{sectionSettings["pse
 config.JobType.allowUndistributedCMSSW = True
 
 if is_gensim:
-    config.Data.splitting = 'EventBased' 
+    config.Data.splitting = 'EventBased'
     config.Data.unitsPerJob = int(sectionSettings["unitsPerGenJob"])
     config.Data.totalUnits = config.Data.unitsPerJob * int(sectionSettings["nGenJobs"])
     config.Data.outputPrimaryDataset = sectionSettings["outputPD"]

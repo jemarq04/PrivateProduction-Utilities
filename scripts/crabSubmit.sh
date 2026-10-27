@@ -34,7 +34,7 @@ if [[ -n $year ]]; then
   [[ $valid_years = *$year* ]] || die "invalid year: $year. must be one of $valid_years"
   sed -i -e "s|^year: .*|year: $year|" settings.cfg
 
-# Submit jobs for each requested section 
+# Submit jobs for each requested section
 while [ $# -gt 0 ]; do
   if [[ -z $(grep "^\s*\[$1\]\s*$" settings.cfg) ]]; then
     echo "Section name $1 not found"
