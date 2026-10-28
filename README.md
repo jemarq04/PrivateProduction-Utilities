@@ -13,11 +13,13 @@ cd CMSSW_15_0_19/src
 cmsenv
 ```
 
-To download the package, run
+To download the package and set it up, run
 
 ```bash
 git clone git@github.com:jemarq04/PrivateProduction-Utilities PrivateProduction/Utilities
 scram build -j12
+cd PrivateProduction/Utilities
+cp submit/settings_template.cfg submit/settings.cfg
 ```
 
 ## Adding new fragments
