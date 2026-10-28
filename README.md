@@ -40,6 +40,11 @@ to get a help printout explaining how to use the script. To generate config
 files for all steps for 'WZpol' in 2024, for example, you would run
 `prepareCMSSW.sh 2024 WZpol`.
 
+Note that different steps may require different CMSSW releases! For example, the
+`HLT:2024_v14` step does not exist in `CMSSW_15_X_Y`, but is part of the
+standard process for 2024 MC. You'll need two different CMSSW releases to submit
+those jobs.
+
 ## Submitting jobs and generating events
 
 Before you submit the jobs to CRAB, `cd` into
