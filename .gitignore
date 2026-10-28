@@ -1,5 +1,7 @@
 __pycache__/
 
+/inputs/*.py
+
 /submit/settings.cfg
 /submit/crab.log
 /submit/crab_*/

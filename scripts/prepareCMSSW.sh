@@ -111,6 +111,7 @@ else
 fi
 
 # Create CMS files for each input/step
+mkdir -p $utils/inputs
 for name in ${names[@]}; do
   fragment="$utils/python/${name}_${year}-fragment.py"
 
