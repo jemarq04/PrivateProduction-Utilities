@@ -42,6 +42,8 @@ fi
 
 # Set options based on year
 nThreads=4
+mini_eventcontent=MINIAODSIM
+nano_eventcontent=NANOEDMAODSIM
 if [[ $year = 2022 ]]; then
   era=Run3
   mini_era="$era,run3_miniAOD_12X"
@@ -99,6 +101,9 @@ elif [[ $year = 2024 ]]; then
   pileup="dbs:/Neutrino_E-10_gun/RunIIISummer24PrePremix-Premixlib2024_140X_mcRun3_2024_realistic_v26-v1/PREMIX"
   procModifiers="premix_stage2"
   HLT="2024v14"
+
+  mini_eventcontent=MINIAODSIM1
+  nano_eventcontent=NANOEDMAODSIM1
 else
   die "Only 2024 options are available - add more options if needed"
 fi
@@ -131,19 +136,13 @@ for name in ${names[@]}; do
         die "failed to generate RECO config file"
 
     elif [[ $step = MINI ]]; then
-      eventcontent=MINIAODSIM
-      [[ $year = 2024 ]] && eventcontent=MINIAODSIM1
-
       outname=MINI-${name}_${year}
-      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier MINIAODSIM --conditions $mini_conditions --step PAT --geometry DB:Extended --era $mini_era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads ||
+      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent $mini_eventcontent --datatier MINIAODSIM --conditions $mini_conditions --step PAT --geometry DB:Extended --era $mini_era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads ||
         die "failed to generate MINI config file"
 
     elif [[ $step = NANO ]]; then
-      eventcontent=NANOEDMAODSIM
-      [[ $year = 2024 ]] && eventcontent=NANOEDMAODSIM1
-
       outname=NANO-${name}_${year}
-      cmsDriver.py step4 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier NANOAODSIM --conditions $nano_conditions --step NANO --scenario pp --era $nano_era --nThreads $nThreads ||
+      cmsDriver.py step4 --fileout file:$outname.root --mc --eventcontent $nano_eventcontent --datatier NANOAODSIM --conditions $nano_conditions --step NANO --scenario pp --era $nano_era --nThreads $nThreads ||
         die "failed to generate NANO config file"
     else
       die "unknown step $step"
