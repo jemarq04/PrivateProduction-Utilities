@@ -1,7 +1,7 @@
 function _listsettings {
   [[ ! -f settings.cfg ]] && return
 
-  local valid_years="2022 2023 2024"
+  local valid_years="2022 2022EE 2023 2023BPix 2024"
   local valid_steps="GENSIM HLT RECO MINI NANO"
 
   local prev="${COMP_WORDS[COMP_CWORD - 1]}"
