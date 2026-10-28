@@ -4,8 +4,8 @@ This is a CMSSW package to help submit CRAB jobs for private production.
 
 ## Setup
 
-To get started, work in a `CMSSW_15_X_Y` release (e.g. `CMSSW_15_0_19`) and activate
-the environment. If you need to recreate the environment, you can run
+To get started, work in a CMSSW environment (e.g. `CMSSW_15_0_19`) and activate
+the environment. For creating a new one, you can use the following example.
 
 ```bash
 cmsrel CMSSW_15_0_19
@@ -37,13 +37,14 @@ For example, you could add `WZpol_2024-fragment.py`.
 To create the config files you need, you can use the `prepareCMSSW.sh` helper
 script. Since you have compiled the package, just run `prepareCMSSW.sh --help`
 to get a help printout explaining how to use the script. To generate config
-files for all steps for 'WZpol' in 2024, for example, you would run
-`prepareCMSSW.sh 2024 WZpol`.
+files for the GENSIM and HLT steps for 'WZpol' in 2024, for example, you would run
+`prepareCMSSW.sh -s "GENSIM HLT" 2024 WZpol`. The quotation marks are important
+for the script to recognize multiple steps.
 
 Note that different steps may require different CMSSW releases! For example, the
 `HLT:2024_v14` step does not exist in `CMSSW_15_X_Y`, but is part of the
 standard process for 2024 MC. You'll need two different CMSSW releases to submit
-those jobs.
+those jobs. Other years have similar restrictions.
 
 ## Submitting jobs and generating events
 
@@ -78,7 +79,8 @@ dataset as the input dataset for the next step. For example, once you've
 submitted a GENSIM job you can get the name of the output dataset with `crab
 status -d <CRAB_DIR>`. This dataset name will end in "USER" (instead of the
 usual "GENSIM"). Copy this and add it to the "GENSIMDataset" option in
-`settings.cfg`.
+`settings.cfg`. Then it can be retrieved as the input dataset for the next set
+of CRAB jobs.
 
 ### Submitting jobs with custom gridpacks
 
@@ -88,7 +90,7 @@ If you need to use a custom gridpack and not one that is centrally available on
 `/hdfs/store/user/<USER>/mypath` as
 `root://cmsxrootd.hep.wisc.edu:1094/store/user/<USER>/mypath`. To be able to
 access the file, make sure the `scriptName` parameter for the
-ExternalLHEProducer in your desired fragment provides
+ExternalLHEProducer in your desired fragment uses
 `GeneratorInterface/LHEInterface/data/run_generic_tarball_xrootd.sh`.
 
 ### Tab-completion with crabSubmit.sh
