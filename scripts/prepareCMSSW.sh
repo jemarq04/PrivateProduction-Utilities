@@ -65,17 +65,20 @@ for name in ${names[@]}; do
     echo "=====> Generating step $step"
     if [[ $step = GENSIM ]]; then
       outname=GENSIM-${name}_${year}
-      cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads &&
+      (cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads &&
         sed -i -e "s/^process.LHEoutput_step/#process.LHEoutput_step/" $utils/inputs/$outname.py &&
-        sed -i -e "s/,process.LHEoutput_step)/) #process.LHEoutput_step)/" $utils/inputs/$outname.py
+        sed -i -e "s/,process.LHEoutput_step)/) #process.LHEoutput_step)/" $utils/inputs/$outname.py) ||
+        die "failed to generate GENSIM config file"
 
     elif [[ $step = HLT ]]; then
       outname=HLT-${name}_${year}
-      cmsDriver.py step1 --fileout file:$outname.root --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:$HLT --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step1 --fileout file:$outname.root --pileup_input "$pileup" --mc --eventcontent PREMIXRAW --datatier GEN-SIM-RAW --conditions $conditions --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:$HLT --geometry DB:Extended --datamix PreMix --era $era --procModifiers premix_stage2 --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads ||
+        die "failed to generate HLT config file"
 
     elif [[ $step = RECO ]]; then
       outname=RECO-${name}_${year}
-      cmsDriver.py step2 --fileout file:$outname.root --mc --eventcontent AODSIM --datatier AODSIM --conditions $conditions --step RAW2DIGI,L1Reco,RECO,RECOSIM --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step2 --fileout file:$outname.root --mc --eventcontent AODSIM --datatier AODSIM --conditions $conditions --step RAW2DIGI,L1Reco,RECO,RECOSIM --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads ||
+        die "failed to generate RECO config file"
 
     elif [[ $step = MINI ]]; then
       eventcontent=MINIAODSIM
@@ -83,14 +86,16 @@ for name in ${names[@]}; do
       [[ $year = 2024 ]] && eventcontent=MINIAODSIM1 && tempconditions=$newconditions
 
       outname=MINI-${name}_${year}
-      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier MINIAODSIM --conditions $tempconditions --step PAT --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads
+      cmsDriver.py step3 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier MINIAODSIM --conditions $tempconditions --step PAT --geometry DB:Extended --era $era --no_exec --python_filename=${utils}/inputs/$outname.py --nThreads $nThreads ||
+        die "failed to generate MINI config file"
 
     elif [[ $step = NANO ]]; then
       eventcontent=NANOEDMAODSIM
       [[ $year = 2024 ]] && eventcontent=NANOEDMAODSIM1 && tempconditions=$newconditions
 
       outname=NANO-${name}_${year}
-      cmsDriver.py step4 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier NANOAODSIM --conditions $tempconditions --step NANO --scenario pp --era $era --nThreads $nThreads
+      cmsDriver.py step4 --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier NANOAODSIM --conditions $tempconditions --step NANO --scenario pp --era $era --nThreads $nThreads ||
+        die "failed to generate NANO config file"
     else
       die "unknown step $step"
     fi
