@@ -76,7 +76,11 @@ usual "GENSIM"). Copy this and add it to the "GENSIMDataset" option in
 ### Tab-completion with crabSubmit.sh
 
 There is also a bash script that will add tab-completion to the `crabSubmit.sh`
-script. To activate it, run `source
-$CMSSW_BASE/src/PrivateProduction/Utilities/submit/autocomp.sh`. You'll need to
-run this each time you log in to the server and activate this environment to
-benefit from the tab-completion.
+script. To activate it, run
+
+```bash
+source $CMSSW_BASE/src/PrivateProduction/Utilities/submit/autocomp.sh
+```
+
+You'll need to run this each time you log in to the server and activate this
+environment to benefit from the tab-completion.
