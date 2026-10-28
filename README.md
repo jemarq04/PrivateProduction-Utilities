@@ -52,7 +52,7 @@ submitted (i.e. which dataset/year/step), edit those three fields before running
 the script to specify them in the command-line. However, the relevant section
 needs to exist first. For example, to submit GENSIM
 jobs for 'WZpol' you would run `crabSubmit.sh -y 2024 -s GENSIM WZpol`. Before
-running this, the section "WZpol_2024" should be added like the following:
+running this, the section `WZpol_2024` should be added like the following:
 
 ```cfg
 # This is an example section in settings.cfg
@@ -74,6 +74,17 @@ submitted a GENSIM job you can get the name of the output dataset with `crab
 status -d <CRAB_DIR>`. This dataset name will end in "USER" (instead of the
 usual "GENSIM"). Copy this and add it to the "GENSIMDataset" option in
 `settings.cfg`.
+
+### Submitting jobs with custom gridpacks
+
+If you need to use a custom gridpack and not one that is centrally available on
+`/cvmfs`, then you can copy your gridpack to the HDFS storage and access it via
+`xrootd`. For the UW HDFS storage, you would write the path
+`/hdfs/store/user/<USER>/mypath` as
+`root://cmsxrootd.hep.wisc.edu:1094/store/user/<USER>/mypath`. To be able to
+access the file, make sure the `scriptName` parameter for the
+ExternalLHEProducer in your desired fragment provides
+`GeneratorInterface/LHEInterface/data/run_generic_tarball_xrootd.sh`.
 
 ### Tab-completion with crabSubmit.sh
 
