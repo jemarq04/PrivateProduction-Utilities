@@ -128,7 +128,7 @@ function parse_args() {
   done
 
   # Check positional arguments
-  $silent && [[ $# -lt $num_posargs ]] && die "not enough arguments"
+  ! $silent && [[ $# -lt $num_posargs ]] && die "not enough arguments"
 
   # Save remaining arguments
   BAP_PARSED="$@"
