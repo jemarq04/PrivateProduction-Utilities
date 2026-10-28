@@ -12,8 +12,8 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 
 optstring="h/help*,s/step:,y/year:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
-valid_steps="GENSIM HLT RECO MINI NANO"
-valid_years="2022 2022EE 2023 2023BPix 2024"
+valid_steps=(GENSIM HLT RECO MINI NANO)
+valid_years=(2022 2022EE 2023 2023BPix 2024)
 
 parse_args "$0" "$optstring" 1 "$@"
 eval set -- "$BAP_PARSED"
@@ -25,7 +25,7 @@ names="$@"
 
 # Check for valid step
 if [[ -n $step ]]; then
-  [[ $valid_steps = *$step* ]] || die "invalid step: $step. must be one of $valid_steps"
+  [[ " ${valid_steps[*]} " =~ [[:space:]]$step[[:space:]] ]] || die "invalid step: $step. must be one of ${valid_steps[*]}"
   sed -i -e "s|^step: .*|step: $step|" settings.cfg
 else
   step=$(grep "^step: " settings.cfg | sed -e "s|step: \(.*\)|\1|")
@@ -33,7 +33,7 @@ fi
 
 # Check for valid year
 if [[ -n $year ]]; then
-  [[ $valid_years = *$year* ]] || die "invalid year: $year. must be one of $valid_years"
+  [[ " ${valid_years[*]} " =~ [[:space:]]$year[[:space:]] ]] || die "invalid year: $year. must be one of ${valid_years[*]}"
   sed -i -e "s|^year: .*|year: $year|" settings.cfg
 else
   year=$(grep "^year: " settings.cfg | sed -e "s|year: \(.*\)|\1|")

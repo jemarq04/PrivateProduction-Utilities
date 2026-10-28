@@ -13,9 +13,9 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 # Set default values
 optstring="h/help*,s/steps:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
-valid_steps="GENSIM HLT RECO MINI NANO"
-valid_years="2022 2022EE 2023 2023BPix 2024"
-steps="$valid_steps"
+valid_steps=(GENSIM HLT RECO MINI NANO)
+valid_years=(2022 2022EE 2023 2023BPix 2024)
+steps="all"
 
 # Parse arguments
 parse_args "$0" "$optstring" 1 "$@"
@@ -26,11 +26,13 @@ shift
 names="$@"
 
 # Check for valid steps
-[[ $steps = all ]] && steps="$valid_steps"
-[[ $valid_steps = *$steps* ]] || die "invalid steps: $steps. must be one of $valid_steps"
+[[ $steps = all ]] && steps="${valid_steps[*]}"
+for step in $steps; do
+  [[ " ${valid_steps[*]} " =~ [[:space:]]$step[[:space:]] ]] || die "invalid step: $step. must be one of ${valid_steps[*]}"
+done
 
 # Check for valid year
-[[ $valid_years = *$year* ]] || die "invalid year: $year. must be one of $valid_years"
+[[ " ${valid_years[*]} " =~ [[:space:]]$year[[:space:]] ]] || die "invalid year: $year. must be one of ${valid_years[*]}"
 
 # Set names
 names="$@"
