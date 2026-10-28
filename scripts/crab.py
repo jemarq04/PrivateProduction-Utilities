@@ -1,20 +1,21 @@
-import os
-from datetime import datetime
 import configparser
+import os
+import sys
+from datetime import datetime
 
 # Import user configurations
 settings = configparser.ConfigParser()
 if not os.path.isfile("settings.cfg"):
     print("error: file not found: settings.cfg")
-    exit(1)
+    sys.exit(1)
 settings.read("settings.cfg")
 sectionSettings = settings[settings.get("DEFAULT", "name") + "_" + settings.get("DEFAULT", "year")]
 
 jobAttempt = 1
-requestName = "%s_%i" % (sectionSettings["requestName"], jobAttempt)
-while os.path.isdir("crab_%s" % requestName):
+requestName = f"{sectionSettings['requestName']}_{jobAttempt}"
+while os.path.isdir(f"crab_{requestName}"):
     jobAttempt += 1
-    requestName = "%s_%i" % (sectionSettings["requestName"], jobAttempt)
+    requestName = f"{sectionSettings['requestName']}_{jobAttempt}"
 if sectionSettings.getboolean("appendDate"):
     requestName += f"{datetime.now():%d%b%Y}"
 
@@ -22,7 +23,7 @@ VALID_STEPS = ["GENSIM", "HLT", "RECO", "MINI", "NANO"]
 if sectionSettings["step"] not in VALID_STEPS:
     print("error: invalid step:", sectionSettings["step"])
     print(" valid steps:", ",".join(VALID_STEPS))
-    exit(1)
+    sys.exit(1)
 prev_step = VALID_STEPS.index(sectionSettings["step"]) - 1
 
 is_gensim = sectionSettings["step"] == "GENSIM"
@@ -35,7 +36,7 @@ if not is_gensim:
     prev_input = sectionSettings[VALID_STEPS[prev_step] + "Dataset"]
     if prev_input == "":
         print(f"error: empty input dataset for {VALID_STEPS[prev_step]}Dataset")
-        exit(1)
+        sys.exit(1)
     print(f"  input: {prev_input}")
 
 # Initialize CRAB config
