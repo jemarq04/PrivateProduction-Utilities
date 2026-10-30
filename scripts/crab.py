@@ -19,20 +19,20 @@ while os.path.isdir(f"crab_{requestName}"):
 if sectionSettings.getboolean("appendDate"):
     requestName += f"{datetime.now():%d%b%Y}"
 
-VALID_STEPS = ["GENSIM", "HLT", "RECO", "MINI", "NANO"]
+VALID_STEPS = ["NANOGEN", "GENSIM", "HLT", "RECO", "MINI", "NANO"]
 if sectionSettings["step"] not in VALID_STEPS:
     print("error: invalid step:", sectionSettings["step"])
     print(" valid steps:", ",".join(VALID_STEPS))
     sys.exit(1)
 prev_step = VALID_STEPS.index(sectionSettings["step"]) - 1
 
-is_gensim = sectionSettings["step"] == "GENSIM"
+is_gen = sectionSettings["step"] in ["NANOGEN", "GENSIM"]
 
 # Print statements
 print(f"Submitting {requestName}")
 print(f"  step: {sectionSettings['step']}")
 prev_input = ""
-if not is_gensim:
+if not is_gen:
     prev_input = sectionSettings[VALID_STEPS[prev_step] + "Dataset"]
     if prev_input == "":
         print(f"error: empty input dataset for {VALID_STEPS[prev_step]}Dataset")
@@ -49,7 +49,7 @@ config.General.workArea = "."
 config.General.transferOutputs = True
 config.General.transferLogs = True
 
-if is_gensim:
+if is_gen:
     config.JobType.pluginName = "PrivateMC"
 else:
     config.JobType.pluginName = "Analysis"
@@ -58,7 +58,7 @@ config.JobType.maxMemoryMB = config.JobType.numCores * int(sectionSettings["memo
 config.JobType.psetName = f"{os.environ['CMSSW_BASE']}/src/{sectionSettings['psetName']}"
 config.JobType.allowUndistributedCMSSW = True
 
-if is_gensim:
+if is_gen:
     config.Data.splitting = "EventBased"
     config.Data.unitsPerJob = int(sectionSettings["unitsPerGenJob"])
     config.Data.totalUnits = config.Data.unitsPerJob * int(sectionSettings["nGenJobs"])

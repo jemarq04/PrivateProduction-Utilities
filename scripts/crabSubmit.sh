@@ -4,7 +4,7 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 #@opt -h/--help
 #@optdesc Print help and exit
 #@opt -s/--step
-#@optdesc Step for CRAB job submission. Choices: GENSIM, HLT, RECO, MINI, NANO.
+#@optdesc Step for CRAB job submission. Choices: NANOGEN, GENSIM, HLT, RECO, MINI, NANO.
 #@opt -y/--year
 #@optdesc Year for CRAB job submission. Choices: 2022, 2022EE, 2023, 2023BPix, 2024.
 #@arg name [name ...]
@@ -12,7 +12,7 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 
 optstring="h/help*,s/step:,y/year:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
-valid_steps=(GENSIM HLT RECO MINI NANO)
+valid_steps=(NANOGEN GENSIM HLT RECO MINI NANO)
 valid_years=(2022 2022EE 2023 2023BPix 2024)
 
 parse_args "$0" "$optstring" 1 "$@"

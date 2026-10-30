@@ -13,7 +13,7 @@ source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
 # Set default values
 optstring="h/help*,s/steps:"
 utils="${CMSSW_BASE}/src/PrivateProduction/Utilities"
-valid_steps=(GENSIM HLT RECO MINI NANO)
+valid_steps=(NANOGEN GENSIM HLT RECO MINI NANO)
 valid_years=(2022 2022EE 2023 2023BPix 2024)
 steps="all"
 
@@ -121,7 +121,20 @@ for name in ${names[@]}; do
   echo "Generating cards for $name (steps: $steps)"
   for step in $steps; do
     echo "=====> Generating step $step"
-    if [[ $step = GENSIM ]]; then
+    if [[ $step = NANOGEN ]]; then
+      eventcontent=NANOAOD
+      nanogen="NANO:@GEN"
+      if echo -e "$(cut -d _ -f 1-4 <<<${CMSSW_VERSION#CMSSW_})\n14_1_0_pre5" | sort -C -V; then
+        # This version uses the old NANOGEN syntax
+        eventcontent=NANOAODGEN
+        nanogen=NANOAOD
+      fi
+
+      outname=NANOGEN-${name}_${year}
+      cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent $eventcontent --datatier NANOAODSIM --conditions $conditions --beamspot $beamspot --step LHE,GEN,$nanogen --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads ||
+        die "failed to generate NANOGEN config file"
+
+    elif [[ $step = GENSIM ]]; then
       outname=GENSIM-${name}_${year}
       (cmsDriver.py ${fragment##*src/} --fileout file:$outname.root --mc --eventcontent RAWSIM,LHE --datatier GEN-SIM,LHE --conditions $conditions --beamspot $beamspot --step LHE,GEN,SIM --geometry DB:Extended --era $era --no_exec --python_filename=$utils/inputs/$outname.py --nThreads $nThreads &&
         sed -i -e "s/^process.LHEoutput_step/#process.LHEoutput_step/" $utils/inputs/$outname.py &&
