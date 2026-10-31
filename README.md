@@ -66,6 +66,7 @@ running this, the section `WZpol_2024` should be added like the following:
 GENSIMDataset:
 HLTDataset:
 RECODataset:
+MINIDataset:
 ```
 
 The "general options" dictate how the jobs and output directories are named for
