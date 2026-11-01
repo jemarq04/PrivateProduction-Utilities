@@ -35,6 +35,14 @@ function die() {
   exit 1
 }
 
+function check_valid_option() {
+  # check_valid_option NAME OPTION [OPTION ...]
+  name="$1"
+  shift
+  local options=("$@")
+  [[ " ${options[*]} " =~ [[:space:]]${!name}[[:space:]] ]] || die "invalid $name: ${!name}. must be one of ${options[*]}"
+}
+
 function parse_args() {
   # parse_args SCRIPT_PATH OPTSTRING NUM_POSARGS "$@"
   local silent=false
