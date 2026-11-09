@@ -5,7 +5,11 @@ This is a CMSSW package to help submit CRAB jobs for private production.
 ## Setup
 
 To get started, work in a CMSSW environment (e.g. `CMSSW_15_0_19`) and activate
-the environment. For creating a new one, you can use the following example.
+the environment.
+
+I would recommend working in a fresh environment in some directory you create
+for organization, as you may need several CMSSW environments to get these jobs
+submitted. For creating a new one, you can use the following example.
 
 ```bash
 cmsrel CMSSW_15_0_19
