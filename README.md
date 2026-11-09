@@ -9,9 +9,12 @@ the environment.
 
 I would recommend working in a fresh environment in some directory you create
 for organization, as you may need several CMSSW environments to get these jobs
-submitted. For creating a new one, you can use the following example.
+submitted. For example, creating different CMSSW environments in some
+`private-production` directory in your home directory. For creating a new one,
+you can use the following example.
 
 ```bash
+# cd private-production
 cmsrel CMSSW_15_0_19
 cd CMSSW_15_0_19/src
 cmsenv
