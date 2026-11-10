@@ -18,8 +18,6 @@ valid_years="2022 2022EE 2023 2023BPix 2024"
 parse_args "$0" "$optstring" 1 "$@"
 eval set -- "$BAP_PARSED"
 
-names="$@"
-
 # Check for settings file
 [[ ! -f settings.cfg ]] && die "settings.cfg not found: make sure to run in $utils/submit/"
 
