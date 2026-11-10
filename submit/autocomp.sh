@@ -17,6 +17,7 @@ function _listsettings {
     local settings_list=(${settings_list[@]##*\[})
     local settings_list=(${settings_list[@]%%\]*})
     local settings_list=(${settings_list[@]/DEFAULT/})
+    local settings_list=(${settings_list[@]%_[0-9]*})
     COMPREPLY=($(compgen -W "${settings_list[*]}" -- $2))
     ;;
   esac
