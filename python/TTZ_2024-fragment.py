@@ -2,10 +2,12 @@ import FWCore.ParameterSet.Config as cms
 
 externalLHEProducer = cms.EDProducer("ExternalLHEProducer",
     args = cms.vstring('/cvmfs/cms.cern.ch/phys_generator/gridpacks/slc7_amd64_gcc700/13p6TeV/madgraph/V5_2.6.5/ttZSMEFT/ttZlep_slc7_amd64_gcc700_CMSSW_10_6_19_tarball.tar.xz'),
+    # args = cms.untracked.vstring('root://cmsxrootd.hep.wisc.edu:1094/store/user/<USER>/PATH/TO/TARBALL'), # for custom gridpacks in UW HDFS
     nEvents = cms.untracked.uint32(5000),
     numberOfParameters = cms.uint32(1),
     outputFile = cms.string('cmsgrid_final.lhe'),
-    scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh')
+    scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_cvmfs.sh'),
+    # scriptName = cms.FileInPath('GeneratorInterface/LHEInterface/data/run_generic_tarball_xrootd.sh'), # for custom gridpacks in UW HDFS
 )
 
 # Link to datacards:
