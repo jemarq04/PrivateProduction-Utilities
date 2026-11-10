@@ -28,6 +28,7 @@ function _listsettings {
       COMPREPLY=($(compgen -W "${settings_list[*]}" -- "$cur"))
       ;;
     esac
+    ;;
   esac
 }
 complete -F _listsettings crabSubmit.sh
