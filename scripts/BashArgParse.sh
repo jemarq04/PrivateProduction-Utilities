@@ -9,6 +9,7 @@ __SCRIPT_PATH=
 #
 #  Example:
 #   parse_args "$scriptname" "$optstring" $num_posargs "$@"
+#   eval set -- "$PARSED"
 #
 #  - "$scriptname": The first argument sets the script name, which is used in
 #  usage and help printouts. (Most often, this is just "$0")
@@ -18,6 +19,10 @@ __SCRIPT_PATH=
 #  your script.
 #  - "$@": This argument should remain unchanged - this passes all of
 #  the command-line arguments to the function to be parsed.
+#
+#  The `eval` command is to set the remaining positional arguments
+#  as the "$@" variable in your script so you can store and parse them
+#  as you need.
 #
 # The $optstring parameter
 #
