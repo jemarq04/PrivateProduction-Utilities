@@ -1,5 +1,46 @@
 __SCRIPT_PATH=
 
+# === Minimal argument parsing script ===
+#
+# Usage:
+#  To add parsing for your script, first `source` this file
+#  and then run `parse_args` to parse and store the command-line
+#  variables you specified.
+#
+#  Example:
+#   parse_args "$scriptname" "$optstring" $num_posargs "$@"
+#
+#  - "$scriptname": The first argument sets the script name, which is used in
+#  usage and help printouts. (Most often, this is just "$0")
+#  - "$optstring": This argument tells this script how to expect
+#  arguments from the command-line. More on this below.
+#  - $num_posargs: The number of positional arguments *required* by
+#  your script.
+#  - "$@": This argument should remain unchanged - this passes all of
+#  the command-line arguments to the function to be parsed.
+#
+# The $optstring parameter
+#
+#  Arguments should be provided as a comma-separated list of entries of
+#  the following form:
+#   short/long[*:]
+#
+#  - short: This is the 'short' option for the argument. Only one alphanumeric character allowed.
+#  - long: This is the 'long' option for the argument. Alphanumeric characters and '-' are allowed.
+#  - [*:]: These are optional symbols to express properties of the argument. To specify that
+#  this argument will print the help message, add '*'. To specify that this argument takes one or more
+#  values, add ':'.
+#
+#  Example
+#   'h/help*,/num:'
+#
+#   This would allow for parsing `SCRIPT -h` or `SCRIPT --num 3`, for example. You don't need to provide
+#   both a short and long name, just one will suffice.
+#
+#  For debugging, you can precede the entire optstring with '*'. To handle all errors yourself, precede the
+#  entire optstring with ':'.
+#
+
 function print_usage() {
   # Prints usage based on opts/args defined with '#--:' comments
   local opts="[OPTS]"
