@@ -120,9 +120,9 @@ function parse_args() {
 
   # Call getopt command
   $debug && echo "getopt -n $__SCRIPT_PATH -o $optstring --long ${loptstring#,} -- $@"
-  local PARSED=$(getopt -n $__SCRIPT_PATH -o $optstring --long ${loptstring#,} -- "$@")
+  local parsed=$(getopt -n $__SCRIPT_PATH -o $optstring --long ${loptstring#,} -- "$@")
   [[ $? -ne 0 ]] && $silent && echo && die "failed to parse arguments"
-  eval set -- "$PARSED"
+  eval set -- "$parsed"
 
   # Parse variables from getopt
   while true; do
