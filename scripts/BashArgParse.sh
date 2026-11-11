@@ -180,6 +180,6 @@ function parse_args() {
   ! $silent && [[ $# -lt $num_posargs ]] && die "not enough arguments"
 
   # Save remaining arguments
-  BAP_PARSED="$@"
-  $debug && echo "Set remaining variables BAP_PARSED=$BAP_PARSED"
+  PARSED="$@"
+  $debug && echo "Set remaining variables PARSED=$PARSED"
 }

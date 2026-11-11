@@ -19,7 +19,7 @@ steps="all"
 
 # Parse arguments
 parse_args "$0" "$optstring" 1 "$@"
-eval set -- "$BAP_PARSED"
+eval set -- "$PARSED"
 
 year="$1"
 shift

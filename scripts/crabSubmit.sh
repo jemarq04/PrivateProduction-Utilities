@@ -16,7 +16,7 @@ valid_steps="NANOGEN GENSIM HLT RECO MINI NANO"
 valid_years="2022 2022EE 2023 2023BPix 2024"
 
 parse_args "$0" "$optstring" 0 "$@"
-eval set -- "$BAP_PARSED"
+eval set -- "$PARSED"
 
 names="$@"
 
