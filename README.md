@@ -76,6 +76,11 @@ RECODataset:
 MINIDataset:
 ```
 
+Instead of using any command-line options to specify the year/step/name, you
+can edit all of these values manually in `submit/settings.cfg` and then simply
+run `crabSubmit.sh` with no arguments. The script will submit CRAB jobs based
+on the information already present in the settings file.
+
 The "general options" dictate how the jobs and output directories are named for
 the jobs, and for the most part can be left alone. The "job options" determine
 the memory per core for the jobs as well as some configuration for the GENSIM
