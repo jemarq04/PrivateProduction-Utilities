@@ -1,11 +1,14 @@
 #!/bin/bash
 
 source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
+#@desc This script helps submit CRAB jobs using a settings.cfg file in your
+#@desc working directory. You can specify the step/year/name for the job with
+#@desc this script, or just edit it manually in the settings file.
 #@opt -h/--help
 #@optdesc Print help and exit
-#@opt -s/--step
+#@opt -s/--step STEP
 #@optdesc Step for CRAB job submission. Choices: NANOGEN, GENSIM, HLT, RECO, MINI, NANO.
-#@opt -y/--year
+#@opt -y/--year YEAR
 #@optdesc Year for CRAB job submission. Choices: 2022, 2022EE, 2023, 2023BPix, 2024.
 #@arg [name [name ...]]
 #@argdesc Name(s) of a name in settings.cfg with the desired options for CRAB job

@@ -52,10 +52,15 @@ function print_usage() {
 
 function print_help() {
   # Prints help based on opts/args defined with '#--:' comments
+  local desc=$(egrep -i '#@desc' $__SCRIPT_PATH | sed -E 's/^[[:space:]]*#@desc[[:space:]]+(.*)/\1/')
   local optshelp=$(egrep -i '#@(req)?opt' $__SCRIPT_PATH | sed -E 's/^[[:space:]]*#@(req)?optdesc[[:space:]]+(.*)/   \2\n/' | sed -E 's/^[[:space:]]*#@(req)?opt[[:space:]]+(.*)/ \2/')
   local argshelp=$(egrep -i '#@arg' $__SCRIPT_PATH | sed -E 's/^[[:space:]]*#@argdesc[[:space:]]+(.*)/   \1\n/' | sed -E 's/^[[:space:]]*#@arg[[:space:]]+(.*)/ \1/')
 
   print_usage
+  if [[ -n $desc ]]; then
+    echo
+    echo $desc
+  fi
   if [[ -n $optshelp ]]; then
     echo
     echo OPTS

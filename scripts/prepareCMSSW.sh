@@ -1,6 +1,11 @@
 #!/bin/bash
 
 source $CMSSW_BASE/src/PrivateProduction/Utilities/scripts/BashArgParse.sh
+#@desc This script helps create CMSSW config files based on the year and steps
+#@desc you need. The "steps" here are split into the commands used in standard
+#@desc CMSSW workflows (as seen on McM). You can always run these commands manually
+#@desc if you need. NOTE: Always remember to re-compile when you add fragments to the
+#@desc python/ directory!
 #@opt -h/--help
 #@optdesc Print help and exit
 #@opt -s/--steps "STEP [STEP ...]"
