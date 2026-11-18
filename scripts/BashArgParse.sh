@@ -88,7 +88,7 @@ function die() {
 
 function check_valid_option() {
   # check_valid_option NAME OPTION [OPTION ...]
-  name="$1"
+  local name="$1"
   shift
   local options=("$@")
   [[ " ${options[*]} " =~ [[:space:]]${!name}[[:space:]] ]] || die "invalid $name: ${!name}. must be one of ${options[*]}"
