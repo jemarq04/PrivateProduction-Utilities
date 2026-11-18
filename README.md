@@ -29,6 +29,37 @@ cd PrivateProduction/Utilities
 cp submit/settings_template.cfg submit/settings.cfg
 ```
 
+When switching between environments, you need to deactivate the CMSSW
+environment. For some reason, this is not set as an alias by default! When you
+want to deactivate your environment, run the following command.
+
+```bash
+eval `scram unsetenv -sh`
+```
+
+As a tip, you can add an alias to this in your `~/.bashrc` file so that you can
+run this more easily. To do this, add the following line to your `~/.bashrc` file.
+
+```bash
+alias uncmsenv='eval `scram unsetenv -sh`'
+```
+
+### Setting up a fork of this package
+
+It might be easier to create a fork of this repository so you can more easily
+transfer changes and config files between your CMSSW environments. Fork the
+repository through GitHub and then follow the setup instructions above, but
+replace `jemarq04` with your GitHub username. To still have access to any
+changes/fixes implemented from here, add this as an "upstream" repository by
+running the following command.
+
+```bash
+git remote add upstream git@github.com:jemarq04/PrivateProduction-Utilities
+```
+
+Then, when you want updates from this repository, just run `git pull upstream
+main` to pull changes from this main branch to your current working branch.
+
 ## Adding new fragments
 
 If you want to add new CMS config fragment, just copy and paste it into
@@ -75,6 +106,11 @@ HLTDataset:
 RECODataset:
 MINIDataset:
 ```
+
+These sections are the outputs from the CRAB jobs to help each job run in
+sequence. For example, the "GENSIMDataset" field would be the DAS identifier for
+the output from your GENSIM CRAB jobs. That way, when you submit HLT jobs, the
+package knows what to use as the input dataset.
 
 Instead of using any command-line options to specify the year/step/name, you
 can edit all of these values manually in `submit/settings.cfg` and then simply
