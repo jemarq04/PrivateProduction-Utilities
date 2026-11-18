@@ -52,7 +52,7 @@ function print_usage() {
   local reqopts=$(egrep -i '#@reqopt[[:space:]]' $__SCRIPT_PATH | sed -E 's/^[[:space:]]*#@reqopt[[:space:]]+(.*)/\1/' | xargs)
   [[ -n $reqopts ]] && local opts="$opts $reqopts"
   local args=$(egrep -i '#@arg[[:space:]]' $__SCRIPT_PATH | sed -E 's/^[[:space:]]*#@arg[[:space:]]+(.*)/\1/' | xargs)
-  echo "usage: $__SCRIPT_PATH $opts $args"
+  echo "usage: $(basename $__SCRIPT_PATH) $opts $args"
 }
 
 function print_help() {
