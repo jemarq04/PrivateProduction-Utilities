@@ -163,6 +163,8 @@ everything finished successfully, this isn't too helpful with MC. With data, it
 can tell you what lumi sections were processed. If there were any jobs that kept
 failing, this will create a `failedFiles.json` file in `<DIR>/results/` that
 will tell you which job ID failed and which files it attempted to process.
+- `crab kill -d <DIR>`: This stops the jobs from running -- mostly helpful if
+you notice something wrong with the job itself and you know they'll eventually fail.
 
 Some helpful CRAB pages to bookmark:
 
